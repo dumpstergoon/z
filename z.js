@@ -7,6 +7,7 @@ const z = (_global => {
 	const TYPE = Symbol("type template");
 	const SATISFIES = Symbol("type compare");
 
+	const ABSTRACT = Symbol("abstract meta type");
 	const STATIC = Symbol("static meta type");
 	const MODEL = Symbol("model meta type");
 	const ELEMENT = Symbol("element meta type");
@@ -281,7 +282,7 @@ const z = (_global => {
 		if (type === ELEMENT) {
 			name = name.toLowerCase();
 			template = values => apply(document.createElement(name), values);
-		} else {
+		} else if (type !== ABSTRACT) {
 			template = (...arguments) => {
 				let object = create(concat(template.prototype, {
 					constructor: template,
@@ -292,7 +293,7 @@ const z = (_global => {
 			};
 		}
 
-		extend(template, static, {
+		extend(template || {}, static, {
 			type: name,
 			parents: templates,
 			properties: concat(...templates.map(template => template.properties), properties, {
@@ -325,17 +326,23 @@ const z = (_global => {
 			},
 			[TYPE]: MODEL,
 			static(definition) {
-				// TODO: Need to test if this actually works...
+				// TODO: Test static.
 				let [prototype, properties] = sort_definition(definition);
 				return extend(this.self, create(properties), prototype) && this;
 			}
 		};
 	};
 
+	const abstract = (definition, ...parents) => {
+		return extend(model(definition, ...parents), {
+			[TYPE]: ABSTRACT
+		});
+	};
+
 	const static = (definition, ...parents) => {
 		return extend(model(definition, ...parents), {
 			[TYPE]: STATIC
-		})(/* No defaults... */);
+		});
 	};
 
 	const element = (definition, ...parents) => {
@@ -690,7 +697,7 @@ const z = (_global => {
 				property: x => Type.meta(x, [PROPERTY, ATTRIBUTE]),
 				attribute: x => Type.meta(x, [ATTRIBUTE]),
 				listener: x => Type.meta(x, [LISTENER]),
-				model: x => Type.meta(x, [MODEL, STATIC]),
+				model: x => Type.meta(x, [MODEL, STATIC, ABSTRACT]),
 				element: x => Type.meta(x, [ELEMENT]),
 			}),
 
