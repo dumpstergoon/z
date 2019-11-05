@@ -16,7 +16,7 @@ Note that both `definitions.js` and the css files are customisable/replaceable a
 For this to work best, have a webserver such as NGINX route all your localhost traffic to the index.html file. Mine is setup
 like so just for now:
 
-```
+```ini
 location / {
 	# First attempt to serve request as file then fall back to displaying the index.html page...
 	try_files $uri /index.html;
@@ -31,7 +31,7 @@ We probably want to do some exciting things like create our own dom elements and
 ### Overview
 Let's define some new elements! We call `z.define` and pass to it an anonymous function. The first parameter of the function
 you pass to `z.define` is a reference to the target object that is returned by `z.define`.
-```
+```js
 const lib = z.define(lib => {
 	// The function we pass to `z.define` must return an object. This object is where the magic happens.
 	return {
@@ -75,7 +75,7 @@ const lib = z.define(lib => {
 `z.abstract` and `z.model` are pretty much the same thing except `z.model` returns a function. This function is the _constructor_
 for our __type__. There is also `z.static` which is a one-off model that is constructed upon definition.
 
-```
+```js
 let dog = lib.Dog();
 dog.bark();
 // yields: "woof"
@@ -83,7 +83,7 @@ dog.bark();
 
 Next, to use our element, add the markup inside the `<body>` like so:
 
-```
+```html
 <robo-dog text="Click Me"></robo-dog>
 ```
 
