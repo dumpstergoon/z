@@ -29,26 +29,62 @@ We probably want to do some exciting things like create our own dom elements and
 `definitions.js` or add to it with another javascript file. Call it whatever you want and include it after `z.js`.
 
 ### Overview
+Let's define some new elements! We call `z.define` and pass to it an anonymous function. The first parameter of the function
+you pass to `z.define` is a reference to the target object that is returned by `z.define`.
 ```
-// Let's define some new elements! We call `z.define` and pass to it an anonymous function. The first parameter of the function
-// you pass to `z.define` is a reference to the target object that is returned by `z.define`. This provides some internal
-// reference.
 const lib = z.define(lib => {
 	// The function we pass to `z.define` must return an object. This object is where the magic happens.
 	return {
+		
 		// Here we are defining an element whose tag is `text-label`.
 		"text-label": z.element({
+			
 			// This will increments each time the attribute `text` is assigned a new value.
 			// That way, we can reflect this in our css using `var(--counter)`
 			counter: z.css.integer(0),
+			
 			// A get-set property called "text" that, when assigned, alters the textContent.
 			text: z.attribute.string("", (text_label, from, to) => {
 				text_label.counter++;
 				text_label.textContent = to;
 			})
 		}),
+		
+		// Sometimes I don't want to make an element, but I want to define some functionality
+		// that might be used by many different types of elements. This is where `abstracts`
+		// and `models` come in handy!
+		Robot: z.abstract({
+			speak() {
+				return "10010101001";
+			}
+		}),
+		Dog: z.model({
+			bark() {
+				return "woof";
+			}
+		}),
+		"robo-dog": z.element({
+			click: z.listener((robo_dog, event) => {
+				this.text = robo_dog.speak() + robo_dog.bark();
+			}),
+		}, "Robot", "Dog", "text-label");
 	};
 });
+```
+
+`z.abstract` and `z.model` are pretty much the same thing except `z.model` returns a function. This function is the _constructor_
+for our __type__. There is also `z.static` which is a one-off model that is constructed upon definition.
+
+```
+let dog = lib.Dog();
+dog.bark();
+// yields: "woof"
+```
+
+Next, to use our element, add the markup inside the `<body>` like so:
+
+```
+<robo-dog text="Click Me"></robo-dog>
 ```
 
 Give that a bash! Fun right? Let's move on to the rest of the documentation...
