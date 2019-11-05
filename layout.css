@@ -1,0 +1,34 @@
+body {
+	position:relative;
+	top:0;
+	left:0;
+	width:100vw;
+	min-height:100vh;
+	margin:0;
+	padding:0;
+}
+
+web-app {
+	position:relative;
+	left:0;
+	width:100vw;
+	height:100vh;
+}
+
+app-screen {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100vw;
+	min-height:100vh;
+}
+
+app-screen {
+	display:none;
+	left:-200vw;
+}
+
+app-screen[active=true] {
+	display:block;
+	left:0;
+}

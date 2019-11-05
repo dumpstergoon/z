@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# TODO: Create a src/ folder and concat all files in this folder into
+# one super giant javascript file.

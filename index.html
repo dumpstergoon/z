@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-gb">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" type="text/css" href="layout.css" />
+		<link rel="stylesheet" type="text/css" href="theme.css" />
+		<script type="text/javascript" src="z.js"></script>
+		<script type="text/javascript" src="definitions.js"></script>
+	</head>
+	<body>
+		<web-app name="zed">
+			<app-screen title="Zed UI" path="/">
+				<h1>Hello World.</h1>
+				<z-list id="list">
+					<z-item></z-item>
+					<z-item>
+						<z-list id="sublist">
+							<z-item></z-item>
+							<z-item></z-item>
+						</z-list>
+					</z-item>
+					<z-item></z-item>
+				</z-list>
+			</app-screen>
+			<app-screen title="Zed UI | Get Started" path="/get-started">
+				<h1>Get Started</h1>
+			</app-screen>
+		</web-app>
+		<script type="text/javascript" src="index.js"></script>
+	</body>
+</html>
